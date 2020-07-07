@@ -31,6 +31,7 @@ namespace Kitchen
                 FoodFactory.CreateFries(),
             };
             var shef = new Shef(order);
+            Console.ReadKey();
         }
     }
 }

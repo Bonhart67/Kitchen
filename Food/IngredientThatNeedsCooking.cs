@@ -8,12 +8,7 @@ namespace Kitchen.Food
         public override bool NeedsCooking => true;
         public int CookingTime { get; protected set; }
         public bool IsCooked { get; protected set; }
-        public override async Task Prepare() 
-        {
-            await Task.Delay(PreparationTime);
-            System.Console.WriteLine($"{ this.Name } prepared");
-        }
-
+        public override bool IsReady => IsCooked;
         public void Cook() => IsCooked = true;
     }
 }

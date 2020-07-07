@@ -18,20 +18,18 @@ namespace Kitchen.Kitchen
                 .Where(i => i.NeedsCooking)
                 .Select(i => i as INeedsCooking);
             this._oven = new Oven(needsCooking);
-            Prepare(new Queue<IIngredient>(ingredientsToPrepare)).Wait();
+            Prepare(new Queue<IIngredient>(ingredientsToPrepare));
         }
 
-        private async Task Prepare(Queue<IIngredient> ingredientsToPrepare)
+        private void Prepare(Queue<IIngredient> ingredientsToPrepare)
         {
-            var task = Task.Factory.StartNew(async () => 
+            Task.Factory.StartNew(async () => 
             {
                 while (ingredientsToPrepare.TryDequeue(out IIngredient ingredient))
                 {
                     await ingredient.Prepare();
                 }
             });
-
-            await task;
         }
 
         private IEnumerable<IIngredient> GetAllIngredientsInOrder(IEnumerable<IFood> order)

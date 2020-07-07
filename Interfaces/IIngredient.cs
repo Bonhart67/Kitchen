@@ -9,6 +9,7 @@ namespace Kitchen.Interfaces
         int PreparationTime { get; }
         bool NeedsCooking { get; }
         bool IsReady { get; }
+        bool IsPrepared { get; }
         Task Prepare();
     }
 }
