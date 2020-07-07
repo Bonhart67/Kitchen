@@ -9,7 +9,7 @@ namespace Kitchen.Food
     {
         public string Name => this.GetType().ToString();
         public int PreparationTime { get; protected set; }
-        public bool NeedsCooking => this is INeedsCooking;
+        public virtual bool NeedsCooking => false;
         public virtual bool IsReady { get; private set; }
         public virtual async Task Prepare() 
         {
