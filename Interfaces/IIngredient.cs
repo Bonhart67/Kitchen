@@ -11,5 +11,6 @@ namespace Kitchen.Interfaces
         bool IsReady { get; }
         bool IsPrepared { get; }
         Task Prepare();
+        event EventHandler<IIngredient> Prepared;
     }
 }

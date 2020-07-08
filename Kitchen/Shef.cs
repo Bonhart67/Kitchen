@@ -10,22 +10,42 @@ namespace Kitchen.Kitchen
     public class Shef
     {
         private Oven _oven;
+        private IList<IFood> _toBeServed;
         public Shef(IEnumerable<IFood> order)
         {
+            this._toBeServed = order.ToList();
             var ingredientsToPrepare = GetAllIngredientsInOrder(order);
-            var asd = new Queue<IIngredient>(ingredientsToPrepare);
             var needsCooking = ingredientsToPrepare
                 .Where(i => i.NeedsCooking)
                 .Select(i => i as INeedsCooking);
-            this._oven = new Oven(new Queue<INeedsCooking>(needsCooking));
+            _oven = new Oven(new Queue<INeedsCooking>(needsCooking));
+            foreach (var ingredient in ingredientsToPrepare)
+                ingredient.Prepared += TryServe;
+            _oven.Cooked += TryServe;
             Prepare(new Queue<IIngredient>(ingredientsToPrepare));
+        }
+
+        private void TryServe(object sender, IIngredient[] ingredients)
+        {
+            var toServe = _toBeServed
+                .Where(f => f.Ingredients.All(i => i.IsReady));
+            // System.Console.WriteLine($"{ toServe.Count() } food is ready at the moment");
+            if (!toServe.Any()) return;
+            System.Console.WriteLine($"{ toServe.Count() }x { toServe.First().Name } served");
+            foreach (var food in toServe)
+                _toBeServed.Remove(food);
+        }
+
+        private void TryServe(object sender, IIngredient ingredient)
+        {
+            TryServe(sender, new IIngredient[] { ingredient });
         }
 
         private void Prepare(Queue<IIngredient> ingredientsToPrepare)
         {
             Task.Factory.StartNew(async () => 
             {
-                while (ingredientsToPrepare.TryDequeue(out IIngredient ingredient))
+                foreach (var ingredient in ingredientsToPrepare)
                 {
                     await ingredient.Prepare();
                 }

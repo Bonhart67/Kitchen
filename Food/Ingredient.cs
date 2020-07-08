@@ -12,11 +12,13 @@ namespace Kitchen.Food
         public virtual bool NeedsCooking => false;
         public virtual bool IsReady => IsPrepared;
         public bool IsPrepared { get; private set; }
+        public event EventHandler<IIngredient> Prepared;
         public async Task Prepare() 
         {
             await Task.Delay(PreparationTime);
             IsPrepared = true;
             System.Console.WriteLine($"{ this.Name } prepared");
+            // Prepared?.Invoke(this, this);
         }
         public int CompareTo([AllowNull] IIngredient other)
         {

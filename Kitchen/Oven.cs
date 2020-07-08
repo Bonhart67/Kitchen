@@ -9,6 +9,7 @@ namespace Kitchen.Kitchen
     public class Oven
     {
         private const int MAX_OVEN_SLOT = 4;
+        public event EventHandler<IIngredient[]> Cooked;
         public Oven(Queue<INeedsCooking> toBeCooked)
         {
             StartCooking(toBeCooked);
@@ -50,6 +51,7 @@ namespace Kitchen.Kitchen
             await Task.Delay(ingredients.First().CookingTime);
             ingredients.ToList().ForEach(i => i.Cook());
             System.Console.WriteLine($"{ ingredients.Length }x { ingredients[0].Name } cooked");
+            // Cooked?.Invoke(this, ingredients);
             return ingredients;
         }
     }

@@ -1,3 +1,4 @@
+using System;
 using System.Threading.Tasks;
 using Kitchen.Interfaces;
 
@@ -9,9 +10,6 @@ namespace Kitchen.Food
         public int CookingTime { get; protected set; }
         public bool IsCooked { get; protected set; }
         public override bool IsReady => IsCooked;
-        public void Cook()
-        {
-            IsCooked = true;
-        }
+        public void Cook() => IsCooked = true;
     }
 }
