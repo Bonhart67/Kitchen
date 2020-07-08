@@ -17,7 +17,7 @@ namespace Kitchen.Kitchen
             var needsCooking = ingredientsToPrepare
                 .Where(i => i.NeedsCooking)
                 .Select(i => i as INeedsCooking);
-            this._oven = new Oven(needsCooking);
+            this._oven = new Oven(new Queue<INeedsCooking>(needsCooking));
             Prepare(new Queue<IIngredient>(ingredientsToPrepare));
         }
 

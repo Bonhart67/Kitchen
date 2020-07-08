@@ -9,38 +9,48 @@ namespace Kitchen.Kitchen
     public class Oven
     {
         private const int MAX_OVEN_SLOT = 4;
-        public Oven(IEnumerable<INeedsCooking> toBeCooked)
+        public Oven(Queue<INeedsCooking> toBeCooked)
         {
-            var _toBeCooked = new Queue<INeedsCooking>(toBeCooked);
-            Cook(_toBeCooked);
+            StartCooking(toBeCooked);
         }
 
-        private void Cook(Queue<INeedsCooking> toBeCooked)
+        private void StartCooking(Queue<INeedsCooking> toBeCooked)
         {
             Task.Factory.StartNew(async () => 
             {
                 while (toBeCooked.Any())
                 {
-                    var ingredientsToCook = toBeCooked
-                        .Take(MAX_OVEN_SLOT)
-                        .TakeWhile(i => i.GetType().Equals(toBeCooked.First().GetType()));
-                    await WaitForIngredientsToBeReady(ingredientsToCook);
-                    // System.Console.WriteLine($"Cooking started with x{ ingredientsToCook.Count() } { ingredientsToCook.First().Name }");
-                    // await Task.Delay(ingredientsToCook.First().CookingTime);
-                    // for (int i = 0; i < ingredientsToCook.Count(); i++)
-                    // {
-                    //     ingredientsToCook.ElementAt(i).Cook();
-                    //     toBeCooked.Dequeue();
-                    // }
-
+                    var ingredientsToCook = SelectIngredientsToCookNext(toBeCooked);
+                    ingredientsToCook = await WaitForIngredientsToBeReady(ingredientsToCook);
+                    System.Console.WriteLine($"Cooking started with { ingredientsToCook.Length }x { ingredientsToCook.First().Name }");
+                    var cookedIngredients = await Cook(ingredientsToCook);
+                    for (int i = 0; i < cookedIngredients.Length; i++)
+                        toBeCooked.Dequeue();
                 }
             });
         }
 
-        private async Task WaitForIngredientsToBeReady(IEnumerable<INeedsCooking> ingredients)
+        private INeedsCooking[] SelectIngredientsToCookNext(Queue<INeedsCooking> ingredients)
+        {
+            return ingredients
+                .Take(MAX_OVEN_SLOT)
+                .TakeWhile(i => i.GetType().Equals(ingredients.First().GetType()))
+                .ToArray();
+        }
+
+        private async Task<INeedsCooking[]> WaitForIngredientsToBeReady(INeedsCooking[] ingredients)
         {
             while (!ingredients.All(i => i.IsPrepared))
                 await Task.Delay(25);
+            return ingredients;
+        }
+
+        private async Task<INeedsCooking[]> Cook(INeedsCooking[] ingredients)
+        {
+            await Task.Delay(ingredients.First().CookingTime);
+            ingredients.ToList().ForEach(i => i.Cook());
+            System.Console.WriteLine($"{ ingredients.Length }x { ingredients[0].Name } cooked");
+            return ingredients;
         }
     }
 }

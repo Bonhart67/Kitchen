@@ -5,6 +5,10 @@ namespace Kitchen.Food.Ingredients
 {
     public class Fries : IngredientThatNeedsCooking
     {
-        public Fries() => this.PreparationTime = 100;
+        public Fries()
+        {
+            this.PreparationTime = 100;
+            this.CookingTime = 2000;
+        }
     }
 }
