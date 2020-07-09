@@ -2,27 +2,20 @@ using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Threading.Tasks;
 using Kitchen.Interfaces;
+using Kitchen.Logger;
 
 namespace Kitchen.Food
 {
-    public abstract class Ingredient : IIngredient
+    public class Ingredient : IIngredient
     {
         public string Name => this.GetType().Name;
         public int PreparationTime { get; protected set; }
-        public virtual bool NeedsCooking => false;
-        public virtual bool IsReady => IsPrepared;
-        public bool IsPrepared { get; private set; }
-        public event EventHandler<IIngredient> Prepared;
+        public int CookingTime { get; protected set; }
+        public bool NeedsCooking => CookingTime != 0;
         public async Task Prepare() 
         {
             await Task.Delay(PreparationTime);
-            IsPrepared = true;
-            System.Console.WriteLine($"{ this.Name } prepared");
-            // Prepared?.Invoke(this, this);
-        }
-        public int CompareTo([AllowNull] IIngredient other)
-        {
-            return this.Name.CompareTo(other.Name);
+            Printer.Print($"{ Name } prepared");
         }
     }
 }

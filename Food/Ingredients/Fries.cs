@@ -3,7 +3,7 @@ using Kitchen.Interfaces;
 
 namespace Kitchen.Food.Ingredients
 {
-    public class Fries : IngredientThatNeedsCooking
+    public class Fries : Ingredient
     {
         public Fries()
         {

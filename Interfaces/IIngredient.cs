@@ -3,14 +3,12 @@ using System.Threading.Tasks;
 
 namespace Kitchen.Interfaces
 {
-    public interface IIngredient : IComparable<IIngredient>
+    public interface IIngredient
     {
         string Name { get; }
         int PreparationTime { get; }
+        int CookingTime { get; }
         bool NeedsCooking { get; }
-        bool IsReady { get; }
-        bool IsPrepared { get; }
         Task Prepare();
-        event EventHandler<IIngredient> Prepared;
     }
 }

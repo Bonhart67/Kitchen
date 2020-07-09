@@ -11,10 +11,7 @@ namespace Kitchen.Food
     {
         public string Name { get; private set; }
         public List<IIngredient> Ingredients { get; private set; } = new List<IIngredient>();
-        public Food(string name)
-        { 
-            this.Name = name;
-        }
+        public Food(string name) => this.Name = name;
         public Food Add<T>() where T : IIngredient, new() 
         {
             Ingredients.Add(new T());
