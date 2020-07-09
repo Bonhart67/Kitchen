@@ -9,7 +9,21 @@ namespace Kitchen.Kitchen
     public class Oven
     {
         private const int MAX_OVEN_SLOT = 4;
-        
+        private IEnumerable<IIngredient> _inProgress;
+        private Queue<IIngredient> _toBeCooked = new Queue<IIngredient>();
+        public Oven()
+        {
+            
+        }
+        public async Task<IIngredient> Cook(IIngredient ingredient)
+        {
+            if (ingredient.CookingTime == 0) return ingredient;
+            _toBeCooked.Enqueue(ingredient);
+            return ingredient;
+        }
+
+
+
 
 
 

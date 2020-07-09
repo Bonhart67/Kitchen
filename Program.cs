@@ -30,7 +30,7 @@ namespace Kitchen
                 FoodFactory.CreateFries(),
                 FoodFactory.CreateFries(),
             };
-            var shef = new Shef(order);
+            var chef = new Chef(order);
             Console.ReadKey();
         }
     }

@@ -8,7 +8,5 @@ namespace Kitchen.Interfaces
         string Name { get; }
         int PreparationTime { get; }
         int CookingTime { get; }
-        bool NeedsCooking { get; }
-        Task Prepare();
     }
 }
