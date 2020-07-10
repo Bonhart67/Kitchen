@@ -20,8 +20,8 @@ namespace Kitchen
                 Printer.Display($"Cooking started with { caption }", ConsoleColor.Cyan);
                 await Task.Delay(batch[0].CookingTime);
                 foreach (var ingredient in batch) ingredient.IsComplete = true;
-                BatchDone?.Invoke(this, batch.ToArray());
                 Printer.Display($"{ caption } cooked", ConsoleColor.DarkYellow);
+                BatchDone?.Invoke(this, batch.ToArray());
             }
         }
     }

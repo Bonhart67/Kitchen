@@ -6,7 +6,7 @@ namespace Kitchen
     {
         public static Food CreateNakedBurger()
         {
-            return new Food("NakedBurger")
+            return new Food("Naked Burger")
                 .Add<Patty>()
                 .Add<Lettuce>()
                 .Add<Tomato>()
@@ -14,14 +14,14 @@ namespace Kitchen
         }
         public static Food CreateBasicBurger()
         {
-            return new Food("BasicBurger")
+            return new Food("Basic Burger")
                 .Add<Patty>()
                 .Add<Bun>()
                 .Add<Ketchup>();
         }
         public static Food CreateCheeseBurger()
         {
-            return new Food("CheeseBurger")
+            return new Food("Cheese Burger")
                 .Add<Bun>()
                 .Add<Patty>()
                 .Add<Cheese>()
@@ -29,7 +29,7 @@ namespace Kitchen
         }
         public static Food CreateFullBurger()
         {
-            return new Food("FullBurger")
+            return new Food("Full Burger")
                 .Add<Patty>()
                 .Add<Bun>()
                 .Add<Lettuce>()
@@ -39,7 +39,7 @@ namespace Kitchen
         }
         public static Food CreateDoubleBurger()
         {
-            return new Food("DoubleBurger")
+            return new Food("Double Burger")
                 .Add<Patty>()
                 .Add<Patty>()
                 .Add<Bun>()
@@ -51,12 +51,12 @@ namespace Kitchen
         }
         public static Food CreateFries()
         {
-            return new Food("FrenchFries")
+            return new Food("French Fries")
                 .Add<Fries>();
         }
         public static Food CreateFriesWithKetchup()
         {
-            return new Food("FrenchFries")
+            return new Food("French Fries with ketchup")
                 .Add<Fries>()
                 .Add<Ketchup>();
         }

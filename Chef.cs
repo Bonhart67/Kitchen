@@ -8,12 +8,12 @@ namespace Kitchen
     public class Chef
     {
         private Oven _oven = new Oven();
-        private readonly IEnumerable<Food> _order;
+        private IList<Food> _order;
         private IList<Ingredient> _toBeCooked;
-        private List<Ingredient> _nextBatch;
+        private List<Ingredient> _nextBatch = new List<Ingredient>();
         public Chef(IEnumerable<Food> order)
         {
-            _order = order;
+            _order = order.ToList();
             _oven.BatchDone += OnBatchDone;
         }
 
@@ -21,7 +21,16 @@ namespace Kitchen
 
         private void TryServe(Ingredient[] ingredients)
         {
-            
+            var foodIds = ingredients.Select(i => i.FoodId).ToList();
+            var relatedFoods = _order
+                .Where(f => foodIds.Contains(f.Id))
+                .Where(f => f.Ingredients.All(i => i.IsComplete));
+            if (relatedFoods.Count() == 0) return;
+            foreach (var food in relatedFoods.GroupBy(f => f.Name))
+            {
+                string caption = $"{ food.Count() } { food.Key }";
+                Printer.Display($"{ caption } served", ConsoleColor.Green);
+            }
         }
 
         public async Task PrepareOrder()
@@ -30,6 +39,8 @@ namespace Kitchen
             _toBeCooked = allIngredients.Where(i => i.CookingTime > 0).ToList();
             foreach (var ingredient in allIngredients) 
                 await HandleIngredient(ingredient);
+            Task.WaitAny(_oven.IsCooking);
+            Printer.Display("--- Order completed ---", ConsoleColor.Green);
         }
 
         private async Task HandleIngredient(Ingredient ingredient)
@@ -38,6 +49,7 @@ namespace Kitchen
 
             if (ingredient.CookingTime > 0) 
             {
+                Printer.Display($"{ ingredient.Name } prepared for cooking", ConsoleColor.White);
                 HandleCooking(ingredient);
                 return;
             }
@@ -50,21 +62,23 @@ namespace Kitchen
         private void HandleCooking(Ingredient ingredient)
         {
             _toBeCooked.Remove(ingredient);
-            if (_nextBatch.Count > 0 && ingredient.Name != _nextBatch[0].Name)
-                SendBatch();
-
+            if (_nextBatch.Count > 0 && ingredient.Name != _nextBatch[0].Name) SendBatch();
             _nextBatch.Add(ingredient);
-            if (_nextBatch.Count != Oven.MAX_OVEN_SLOT) return;
-            
+            if (_nextBatch.Count != Oven.MAX_OVEN_SLOT && _toBeCooked.Count > 0) return;
             SendBatch();
-            if (_oven.IsCooking != null && !_oven.IsCooking.IsCompleted) return;
-            _oven.IsCooking = _oven.CookBatches();
+            StartOvenIfNecessary();
         }
 
         private void SendBatch()
         {
             _oven.AddBatch(_nextBatch);
-            _nextBatch.Clear();
+            _nextBatch = new List<Ingredient>();
+        }
+
+        private void StartOvenIfNecessary()
+        {
+            if (_oven.IsCooking != null && !_oven.IsCooking.IsCompleted) return;
+            _oven.IsCooking = _oven.CookBatches();
         }
 
         private IEnumerable<Ingredient> GetAllIngredientsInOrder(IEnumerable<Food> order)
