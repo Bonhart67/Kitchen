@@ -1,10 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using Kitchen.Food;
-using Kitchen.Food.Ingredients;
-using Kitchen.Interfaces;
-using Kitchen.Kitchen;
 
 namespace Kitchen
 {
@@ -12,7 +7,8 @@ namespace Kitchen
     {
         static void Main(string[] args)
         {
-            var order = new List<IFood>() 
+            Timer.StopWatch.Start();
+            var order = new List<Food>() 
             {
                 FoodFactory.CreateBasicBurger(),
                 FoodFactory.CreateBasicBurger(),
@@ -31,6 +27,7 @@ namespace Kitchen
                 FoodFactory.CreateFries(),
             };
             var chef = new Chef(order);
+            chef.PrepareOrder().Wait();
             Console.ReadKey();
         }
     }

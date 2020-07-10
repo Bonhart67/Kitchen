@@ -1,7 +1,4 @@
-using System.Threading.Tasks;
-using Kitchen.Interfaces;
-
-namespace Kitchen.Food.Ingredients
+namespace Kitchen.Ingredients
 {
     public class Fries : Ingredient
     {

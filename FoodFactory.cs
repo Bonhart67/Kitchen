@@ -1,12 +1,10 @@
-using System.Collections.Generic;
-using Kitchen.Food.Ingredients;
-using Kitchen.Interfaces;
+using Kitchen.Ingredients;
 
-namespace Kitchen.Food
+namespace Kitchen
 {
     public static class FoodFactory
     {
-        public static IFood CreateNakedBurger()
+        public static Food CreateNakedBurger()
         {
             return new Food("NakedBurger")
                 .Add<Patty>()
@@ -14,14 +12,14 @@ namespace Kitchen.Food
                 .Add<Tomato>()
                 .Add<Ketchup>();
         }
-        public static IFood CreateBasicBurger()
+        public static Food CreateBasicBurger()
         {
             return new Food("BasicBurger")
                 .Add<Patty>()
                 .Add<Bun>()
                 .Add<Ketchup>();
         }
-        public static IFood CreateCheeseBurger()
+        public static Food CreateCheeseBurger()
         {
             return new Food("CheeseBurger")
                 .Add<Bun>()
@@ -29,7 +27,7 @@ namespace Kitchen.Food
                 .Add<Cheese>()
                 .Add<Ketchup>();
         }
-        public static IFood CreateFullBurger()
+        public static Food CreateFullBurger()
         {
             return new Food("FullBurger")
                 .Add<Patty>()
@@ -39,7 +37,7 @@ namespace Kitchen.Food
                 .Add<Cheese>()
                 .Add<Ketchup>();
         }
-        public static IFood CreateDoubleBurger()
+        public static Food CreateDoubleBurger()
         {
             return new Food("DoubleBurger")
                 .Add<Patty>()
@@ -51,12 +49,12 @@ namespace Kitchen.Food
                 .Add<Cheese>()
                 .Add<Ketchup>();
         }
-        public static IFood CreateFries()
+        public static Food CreateFries()
         {
             return new Food("FrenchFries")
                 .Add<Fries>();
         }
-        public static IFood CreateFriesWithKetchup()
+        public static Food CreateFriesWithKetchup()
         {
             return new Food("FrenchFries")
                 .Add<Fries>()
