@@ -9,7 +9,7 @@ namespace Kitchen
         static void Main(string[] args)
         {
             Timer.StopWatch.Start();
-            var chef = new Chef(GetOrder());
+            var chef = new Chef(GetOrderTwice());
             chef.PrepareOrder().Wait();
             Console.ReadKey();
         }
@@ -35,5 +35,6 @@ namespace Kitchen
                 FoodFactory.CreateFries(),
             };
         }
+        private static IEnumerable<Food> GetOrderTwice() => GetOrder().Concat(GetOrder());
     }
 }
