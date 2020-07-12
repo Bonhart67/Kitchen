@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Kitchen
 {
@@ -8,7 +9,14 @@ namespace Kitchen
         static void Main(string[] args)
         {
             Timer.StopWatch.Start();
-            var order = new List<Food>() 
+            var chef = new Chef(GetOrder());
+            chef.PrepareOrder().Wait();
+            Console.ReadKey();
+        }
+
+        private static IEnumerable<Food> GetOrder()
+        {
+            return new List<Food> 
             {
                 FoodFactory.CreateBasicBurger(),
                 FoodFactory.CreateBasicBurger(),
@@ -26,9 +34,6 @@ namespace Kitchen
                 FoodFactory.CreateFries(),
                 FoodFactory.CreateFries(),
             };
-            var chef = new Chef(order);
-            chef.PrepareOrder().Wait();
-            Console.ReadKey();
         }
     }
 }
