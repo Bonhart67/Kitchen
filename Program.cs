@@ -9,9 +9,8 @@ namespace Kitchen
         static void Main(string[] args)
         {
             Timer.StopWatch.Start();
-            var chef = new Chef(GetOrderTwice());
-            chef.PrepareOrder().Wait();
-            Console.ReadKey();
+            var kitchenService = new KitchenService(GetOrderTwice());
+            kitchenService.PrepareOrder().Wait();
         }
 
         private static IEnumerable<Food> GetOrder()
