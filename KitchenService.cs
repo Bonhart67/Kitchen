@@ -34,13 +34,13 @@ namespace Kitchen
             }
         }
 
-        public async Task PrepareOrder()
+        public void PrepareOrder()
         {
             var allIngredients = GetAllIngredientsInOrder(_order);
             _toBeCooked = allIngredients.Where(i => i.CookingTime > 0).ToList();
             foreach (var ingredient in allIngredients)
             {
-                await SendToChef(ingredient);
+                SendToChef(ingredient);
                 HandleIngredient(ingredient);
                 TryServe(new Ingredient[] { ingredient });
             }
@@ -48,19 +48,16 @@ namespace Kitchen
             Printer.Display("--- Order completed ---", ConsoleColor.Green);
         }
 
-        private async Task SendToChef(Ingredient ingredient)
+        private void SendToChef(Ingredient ingredient)
         {
             var preparationTasks = _chefs.Select(c => c.IsPreparing).ToArray();
             var availableChef = _chefs.FirstOrDefault(c => c.IsPreparing?.IsCompleted ?? true);
             availableChef ??= _chefs[Task.WaitAny(preparationTasks)];
             availableChef.IsPreparing = availableChef.Prepare(ingredient);
-            await availableChef.IsPreparing;
         }
 
         private void HandleIngredient(Ingredient ingredient)
         {
-            // await Task.Delay(ingredient.PreparationTime);
-
             if (ingredient.CookingTime > 0) 
             {
                 Printer.Display($"{ ingredient.Name } prepared for cooking", ConsoleColor.White);

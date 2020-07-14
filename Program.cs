@@ -10,7 +10,7 @@ namespace Kitchen
         {
             Timer.StopWatch.Start();
             var kitchenService = new KitchenService(GetOrderTwice());
-            kitchenService.PrepareOrder().Wait();
+            kitchenService.PrepareOrder();
         }
 
         private static IEnumerable<Food> GetOrder()
